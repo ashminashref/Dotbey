@@ -103,7 +103,7 @@ export default function Footer() {
 
       {/* Translucent Watermark "dotbey" matching Figma Image 4 */}
       <div className="mt-8 text-center pointer-events-none opacity-10 overflow-hidden leading-none select-none">
-        <span className="text-[17vw] font-black tracking-tight text-white inline-block -mb-12">
+        <span className="text-[27vw] font-black tracking-tight text-white inline-block -mb-16">
           dotbey
         </span>
       </div>
