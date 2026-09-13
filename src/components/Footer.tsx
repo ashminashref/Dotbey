@@ -1,18 +1,17 @@
-"use client";
-
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
     <footer className="relative bg-[#0052FF] text-white pt-20 pb-12 overflow-hidden select-none">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pb-16 border-b border-white/20">
-          {/* Brand Logo matching Figma Image 4 */}
+          {/* Official Dotbey Brand Logo */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <Link href="/" className="text-4xl font-bold tracking-tight text-white block mb-4">
-                dotbey
-              </Link>
+              <div className="mb-4">
+                <Logo variant="light" />
+              </div>
               <p className="text-xs sm:text-sm text-blue-100/90 max-w-sm font-normal leading-relaxed">
                 At Dotbey we create powerful digital strategies that help ambitious brands stand out, connect with the right audience, and grow with confidence.
               </p>

@@ -67,7 +67,7 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
     <section id="pricing" className="py-24 bg-white text-slate-900 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header matching Screenshot 351 */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-left sm:text-center max-w-2xl mx-auto mb-14">
           <h2 className="text-4xl sm:text-5xl font-normal tracking-tight text-slate-900">
             Simple <span className="font-accent italic font-normal text-slate-900">pricing</span>
           </h2>

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "@/components/Logo";
 
 interface NavbarProps {
   onBookCall?: () => void;
@@ -56,14 +57,8 @@ export default function Navbar({ onBookCall }: NavbarProps) {
               : "bg-white/95 backdrop-blur-md text-slate-900 shadow-md shadow-black/5"
           }`}
         >
-          {/* Brand Logo - dotbey */}
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-2xl font-bold tracking-tight text-slate-900 group"
-          >
-            <span>dotbey</span>
-            <span className="h-2 w-2 rounded-full bg-[#0052FF]"></span>
-          </Link>
+          {/* Official Dotbey Brand Logo in #035DF7 Electric Blue */}
+          <Logo variant="blue" />
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-7">
@@ -127,14 +122,7 @@ export default function Navbar({ onBookCall }: NavbarProps) {
             >
               {/* Header inside floating island */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-1"
-                >
-                  <span>dotbey</span>
-                  <span className="h-2 w-2 rounded-full bg-[#0052FF]"></span>
-                </Link>
+                <Logo variant="dark" />
                 <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center"

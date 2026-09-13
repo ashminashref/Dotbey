@@ -17,7 +17,7 @@ export default function Hero({ onBookCall }: HeroProps) {
       {/* Background Soft Glow Radial Gradient matching Figma Image 3 */}
       <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_var(--tw-gradient-stops)) from-blue-400/25 via-transparent to-transparent pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center">
+      <div className="relative z-10 max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
         {/* Main Headline matching Figma Image 3 */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

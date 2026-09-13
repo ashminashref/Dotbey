@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, Clock, CheckCircle2, ArrowRight } from "lucide-react";
+import { X, CheckCircle2, ArrowRight } from "lucide-react";
 import confetti from "canvas-confetti";
 
 interface BookCallModalProps {
@@ -21,13 +21,9 @@ export default function BookCallModal({
 
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    phone: "",
-    plan: selectedPlan || "Growth Plan",
-    selectedServices: [] as string[],
-    date: new Date().toISOString().split("T")[0],
-    time: "10:00 AM",
+    contact: "",
     notes: "",
+    plan: selectedPlan || "Growth Strategy",
   });
 
   useEffect(() => {
@@ -35,31 +31,6 @@ export default function BookCallModal({
       setFormData((prev) => ({ ...prev, plan: selectedPlan }));
     }
   }, [selectedPlan]);
-
-  const availableServices = [
-    "Web Engineering",
-    "Video Production",
-    "Video Editing",
-    "Studio Photography",
-    "Graphic & Poster Design",
-    "Meta Ads",
-    "SEO Optimization",
-    "Brand Strategy",
-  ];
-
-  const timeSlots = ["10:00 AM", "01:00 PM", "04:00 PM", "07:00 PM"];
-
-  const toggleService = (service: string) => {
-    setFormData((prev) => {
-      const exists = prev.selectedServices.includes(service);
-      return {
-        ...prev,
-        selectedServices: exists
-          ? prev.selectedServices.filter((s) => s !== service)
-          : [...prev.selectedServices, service],
-      };
-    });
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,8 +48,8 @@ export default function BookCallModal({
       setLoading(false);
       setSubmitted(true);
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 90,
+        spread: 60,
         origin: { y: 0.6 },
         colors: ["#0052FF", "#3B82F6", "#60A5FA"],
       });
@@ -94,181 +65,115 @@ export default function BookCallModal({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-        {/* Apple Blur Backdrop */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        {/* Apple Glass Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={resetForm}
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-md"
+          className="fixed inset-0 bg-slate-950/70 backdrop-blur-lg"
         />
 
-        {/* Modal Window */}
+        {/* Minimal Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 15 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.96, y: 15 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 w-full max-w-xl bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-100 overflow-hidden my-auto text-slate-900"
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100 overflow-hidden my-auto text-slate-900"
         >
           {/* Close Button */}
           <button
             onClick={resetForm}
-            className="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition-colors"
+            className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
 
           {submitted ? (
-            /* Success State */
-            <div className="py-8 text-center flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-blue-50 text-[#0052FF] flex items-center justify-center mb-6">
-                <CheckCircle2 className="w-8 h-8" />
+            /* Success View */
+            <div className="py-6 text-center flex flex-col items-center">
+              <div className="w-14 h-14 rounded-full bg-blue-50 text-[#0052FF] flex items-center justify-center mb-4">
+                <CheckCircle2 className="w-7 h-7" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                Strategy Call Booked
+              <h3 className="text-xl font-bold text-slate-900 mb-1.5">
+                Call Request Received!
               </h3>
-              <p className="text-slate-500 text-sm max-w-sm leading-relaxed mb-8">
-                Thank you <span className="font-semibold text-slate-800">{formData.name}</span>. Our growth team will connect with you on{" "}
-                <span className="font-medium text-[#0052FF]">{formData.date} at {formData.time}</span>.
+              <p className="text-slate-500 text-xs max-w-xs leading-relaxed mb-6">
+                Thank you <span className="font-semibold text-slate-800">{formData.name}</span>. Our team will reach out to <span className="font-medium text-[#0052FF]">{formData.contact}</span> shortly.
               </p>
               <button
                 onClick={resetForm}
-                className="px-6 py-2.5 rounded-full bg-[#0052FF] text-white font-medium text-sm hover:bg-blue-700 transition-colors"
+                className="w-full py-3 rounded-full bg-[#0052FF] text-white font-semibold text-xs hover:bg-blue-700 transition-colors shadow-md"
               >
-                Close
+                Done
               </button>
             </div>
           ) : (
-            /* Form View */
+            /* Clean 3-Field Form */
             <div>
-              <div className="mb-6">
-                <h3 className="text-2xl font-semibold tracking-tight text-slate-900">
+              <div className="mb-6 pr-6">
+                <h3 className="text-xl font-bold tracking-tight text-slate-900">
                   Book a call
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 font-normal">
-                  Discuss your brand goals & package: <span className="font-medium text-[#0052FF]">{formData.plan}</span>
+                <p className="text-xs text-slate-500 mt-1">
+                  Schedule your growth strategy session ({formData.plan}).
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Name & Email */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Alex Mercer"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Work Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="alex@brand.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all"
-                    />
-                  </div>
-                </div>
-
-                {/* Phone */}
                 <div>
-                  <label className="block text-xs font-medium text-slate-700 mb-1">
-                    Phone / WhatsApp *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Your Name *
                   </label>
                   <input
-                    type="tel"
+                    type="text"
                     required
-                    placeholder="+91 98765 43210"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all"
+                    placeholder="e.g. Alex Mercer"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all"
                   />
                 </div>
 
-                {/* Services Tags */}
                 <div>
-                  <label className="block text-xs font-medium text-slate-700 mb-2">
-                    Services Needed
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Email or WhatsApp Number *
                   </label>
-                  <div className="flex flex-wrap gap-1.5">
-                    {availableServices.map((service) => {
-                      const selected = formData.selectedServices.includes(service);
-                      return (
-                        <button
-                          key={service}
-                          type="button"
-                          onClick={() => toggleService(service)}
-                          className={`text-xs font-medium px-3 py-1 rounded-full border transition-all ${
-                            selected
-                              ? "bg-[#0052FF] text-white border-[#0052FF]"
-                              : "bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300"
-                          }`}
-                        >
-                          {service}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <input
+                    type="text"
+                    required
+                    placeholder="alex@company.com or +91 9876543210"
+                    value={formData.contact}
+                    onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all"
+                  />
                 </div>
 
-                {/* Date & Time */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1 flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-[#0052FF]" />
-                      <span>Preferred Date</span>
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#0052FF] text-slate-900 text-xs outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-[#0052FF]" />
-                      <span>Time Slot</span>
-                    </label>
-                    <select
-                      value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-[#0052FF] text-slate-900 text-xs outline-none bg-white"
-                    >
-                      {timeSlots.map((slot) => (
-                        <option key={slot} value={slot}>
-                          {slot}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Project / Goals (Optional)
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="Tell us briefly about your goals or website requirements..."
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-slate-900 text-xs outline-none transition-all resize-none"
+                  />
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full flex items-center justify-center gap-2 rounded-full bg-[#0052FF] hover:bg-blue-700 active:scale-[0.98] py-3 text-white font-medium text-sm transition-all duration-200 disabled:opacity-70 mt-2"
+                  className="w-full flex items-center justify-center gap-2 rounded-full bg-[#0052FF] hover:bg-blue-700 active:scale-[0.98] py-3.5 text-white font-semibold text-xs shadow-lg shadow-blue-600/25 transition-all disabled:opacity-70 mt-2"
                 >
                   {loading ? (
-                    <span>Processing...</span>
+                    <span>Submitting...</span>
                   ) : (
                     <>
-                      <span>Confirm Booking</span>
+                      <span>Book Strategy Call</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}

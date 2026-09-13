@@ -33,11 +33,13 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  background-color: #ffffff;
+html, body {
+  background-color: #0052FF;
   color: #0f172a;
   font-family: var(--font-satoshi);
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
