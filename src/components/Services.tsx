@@ -24,49 +24,49 @@ export default function Services({ onBookCall }: ServicesProps) {
       icon: Globe,
       title: "Web Engineering",
       description: "Lightning-fast, SEO-optimized, Next.js web applications and high-conversion landing pages.",
-      image: "/images/services/service-3.jpg",
+      image: "/images/services/blue-1.jpg",
     },
     {
       icon: Video,
       title: "Video Production & Editing",
       description: "High-retention video editing, reel edits, sound design, motion graphics, and 4K commercial videos.",
-      image: "/images/services/service-2.jpg",
+      image: "/images/services/blue-2.jpg",
     },
     {
       icon: Sparkles,
       title: "Brand Strategy & Growth",
       description: "End-to-end digital positioning, market foresight, competitor analysis, and revenue multipliers.",
-      image: "/images/services/service-4.jpg",
+      image: "/images/services/blue-3.jpg",
     },
     {
       icon: Camera,
       title: "Studio Photography & Visual Arts",
       description: "Professional product shoots, founder portraiture, corporate lifestyle, and abstract 3D visual concepts.",
-      image: "/images/services/service-1.jpg",
+      image: "/images/services/blue-4.jpg",
     },
     {
       icon: Target,
       title: "Meta Ads & Performance",
       description: "Data-backed ad campaigns across Facebook & Instagram with hyper-targeted audience modeling.",
-      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+      image: "/images/services/blue-5.jpg",
     },
     {
       icon: Palette,
       title: "Graphic Design & Posters",
       description: "Brand identity systems, high-converting social media creatives, print posters, and packaging.",
-      image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80",
+      image: "/images/services/blue-1.jpg",
     },
     {
       icon: Search,
       title: "SEO Optimization",
       description: "Technical SEO audits, keyword strategy, backlink acquisition, and high organic ranking.",
-      image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80",
+      image: "/images/services/blue-2.jpg",
     },
     {
       icon: Film,
       title: "Motion Graphics & Reels",
       description: "Dynamic keyframe animations, viral social hooks, and 3D visual effects for modern brands.",
-      image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?auto=format&fit=crop&w=800&q=80",
+      image: "/images/services/blue-3.jpg",
     },
   ];
 
@@ -88,13 +88,13 @@ export default function Services({ onBookCall }: ServicesProps) {
           </p>
         </div>
 
-        {/* Visual Grid with Custom User Photo Cards */}
+        {/* 4-Column Visual Grid with Electric Blue Abstract Glass Photo Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
               <motion.div
-                key={service.title}
+                key={`${service.title}-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -111,7 +111,7 @@ export default function Services({ onBookCall }: ServicesProps) {
                       className="h-full w-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/15 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-slate-950/10 to-transparent" />
                     <div className="absolute bottom-3 left-4 w-9 h-9 rounded-xl bg-white/90 backdrop-blur-md text-[#0052FF] flex items-center justify-center shadow-md">
                       <IconComponent className="w-4 h-4" />
                     </div>

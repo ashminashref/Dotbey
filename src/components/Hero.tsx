@@ -9,7 +9,7 @@ interface HeroProps {
 }
 
 export default function Hero({ onBookCall }: HeroProps) {
-  // Creative & meaningful agency outcome words
+  // Meaningful & creative agency growth outcomes
   const words = [
     "growth.",
     "momentum.",
@@ -34,11 +34,11 @@ export default function Hero({ onBookCall }: HeroProps) {
       id="hero"
       className="relative min-h-[90vh] w-full bg-[#0052FF] text-white flex flex-col justify-center items-center px-4 pt-32 pb-16 overflow-hidden"
     >
-      {/* Soft Glow Radial Gradient */}
+      {/* Background Soft Radial Glow */}
       <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_var(--tw-gradient-stops)) from-blue-400/25 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
-        {/* Main Headline with Blurred Fade Word Rotation */}
+        {/* Main Headline with Standard Blurred Fade Text Transition */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -47,16 +47,16 @@ export default function Hero({ onBookCall }: HeroProps) {
         >
           We don’t build brands, <br className="hidden sm:inline" />
           we build{" "}
-          <span className="inline-block relative min-w-[200px] sm:min-w-[280px] text-left sm:text-center font-accent font-normal italic">
+          <span className="inline-block relative font-accent font-normal italic">
             <AnimatePresence mode="wait">
               <motion.span
                 key={words[index]}
-                initial={{ opacity: 0, filter: "blur(14px)", y: 14, scale: 0.96 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0, scale: 1 }}
-                exit={{ opacity: 0, filter: "blur(14px)", y: -14, scale: 0.96 }}
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(10px)" }}
                 transition={{
-                  duration: 0.55,
-                  ease: [0.16, 1, 0.3, 1],
+                  duration: 0.45,
+                  ease: [0.25, 1, 0.5, 1],
                 }}
                 className="inline-block text-white"
               >
