@@ -62,43 +62,6 @@ export default function Hero({ onBookCall }: HeroProps) {
             <span>Book a call</span>
           </button>
         </motion.div>
-
-        {/* Unique Floating Glassmorphism Agency Studio Showcase Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.45 }}
-          className="mt-16 w-full max-w-4xl bg-white/10 border border-white/20 rounded-3xl p-3 sm:p-4 backdrop-blur-xl shadow-2xl overflow-hidden group"
-        >
-          <div className="relative h-56 sm:h-80 w-full rounded-2xl overflow-hidden bg-slate-900">
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80"
-              alt="Dotbey Digital Agency Studio"
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-            
-            <div className="absolute bottom-5 left-5 right-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="text-left">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-semibold uppercase tracking-wider mb-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-200" />
-                  <span>CREATIVE & PERFORMANCE STUDIO</span>
-                </span>
-                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                  High-velocity design, Next.js web apps & 4K video engineering.
-                </h3>
-              </div>
-
-              <Link
-                href="/about"
-                className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#0052FF] font-semibold text-xs hover:bg-blue-50 transition-colors shadow-md"
-              >
-                <span>Learn our story</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
