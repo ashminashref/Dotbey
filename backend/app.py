@@ -4,11 +4,15 @@ Provides automated lead ingestion, proposal generation, and campaign analytics A
 """
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 import datetime
 import json
+import csv
+import io
+import os
 import uvicorn
 
 app = FastAPI(
@@ -29,21 +33,24 @@ app.add_middleware(
 # Models
 class LeadRequest(BaseModel):
     name: str
-    email: EmailStr
-    phone: str
+    email: Optional[str] = ""
+    phone: Optional[str] = ""
+    contact: Optional[str] = ""
     plan: Optional[str] = "Growth Plan"
     selectedServices: Optional[List[str]] = []
-    date: str
-    time: str
+    date: Optional[str] = ""
+    time: Optional[str] = ""
     notes: Optional[str] = ""
 
-class ProposalRequest(BaseModel):
-    client_name: str
-    budget_inr: float
-    services: List[str]
-
-# In-memory storage for leads (or SQLite / JSON file)
 leads_db = []
+
+# Load existing leads if file exists
+if os.path.exists("leads_log.json"):
+    try:
+        with open("leads_log.json", "r") as f:
+            leads_db = json.load(f)
+    except Exception:
+        leads_db = []
 
 @app.get("/")
 def read_root():
@@ -55,13 +62,12 @@ def read_root():
     }
 
 @app.post("/api/lead")
-def create_lead(lead: LeadRequest, background_tasks: BackgroundTasks):
+def create_lead(lead: LeadRequest):
     lead_entry = lead.dict()
     lead_entry["id"] = f"DOTBEY-PY-{len(leads_db) + 1001}"
     lead_entry["created_at"] = datetime.datetime.now().isoformat()
     leads_db.append(lead_entry)
     
-    # Save lead entry to local storage
     try:
         with open("leads_log.json", "w") as f:
             json.dump(leads_db, f, indent=2)
@@ -78,19 +84,25 @@ def create_lead(lead: LeadRequest, background_tasks: BackgroundTasks):
 def get_leads():
     return {"total": len(leads_db), "leads": leads_db}
 
-@app.post("/api/generate-proposal")
-def generate_proposal(req: ProposalRequest):
-    estimated_timeline = "14 days" if "Web Engineering" in req.services else "7 days"
-    recommended_package = "Growth Plan" if req.budget_inr >= 24999 else "Starter Plan"
+@app.get("/api/export-csv")
+def export_csv():
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(["ID", "Name", "Contact", "Plan", "Notes", "Created At"])
     
-    return {
-        "client_name": req.client_name,
-        "recommended_package": recommended_package,
-        "estimated_timeline": estimated_timeline,
-        "projected_reach_multiplier": "3.5x - 5x within 60 days",
-        "proposed_deliverables": req.services,
-        "agency": "Dotbey Digital Marketing"
-    }
+    for item in leads_db:
+        writer.writerow([
+            item.get("id", ""),
+            item.get("name", ""),
+            item.get("contact") or item.get("email") or item.get("phone", ""),
+            item.get("plan", ""),
+            item.get("notes", ""),
+            item.get("created_at", "")
+        ])
+        
+    response = Response(content=output.getvalue(), media_type="text/csv")
+    response.headers["Content-Disposition"] = f"attachment; filename=Dotbey_Leads_{datetime.date.today()}.csv"
+    return response
 
 if __name__ == "__main__":
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
