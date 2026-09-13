@@ -1,35 +1,72 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ArrowUpRight } from "lucide-react";
 
 interface HeroProps {
   onBookCall?: () => void;
 }
 
 export default function Hero({ onBookCall }: HeroProps) {
+  // Creative & meaningful agency outcome words
+  const words = [
+    "growth.",
+    "momentum.",
+    "authority.",
+    "future.",
+    "impact.",
+    "revenue.",
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 2800);
+
+    return () => clearInterval(timer);
+  }, [words.length]);
+
   return (
     <section
       id="hero"
-      className="relative min-h-[92vh] w-full bg-[#0052FF] text-white flex flex-col justify-center items-center px-4 pt-32 pb-16 overflow-hidden"
+      className="relative min-h-[90vh] w-full bg-[#0052FF] text-white flex flex-col justify-center items-center px-4 pt-32 pb-16 overflow-hidden"
     >
-      {/* Background Soft Glow Radial Gradient matching Figma Image 3 */}
+      {/* Soft Glow Radial Gradient */}
       <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_var(--tw-gradient-stops)) from-blue-400/25 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto text-left sm:text-center flex flex-col items-start sm:items-center">
-        {/* Main Headline matching Figma Image 3 */}
+        {/* Main Headline with Blurred Fade Word Rotation */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.12] text-white"
+          className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.15] text-white"
         >
           We don’t build brands, <br className="hidden sm:inline" />
-          we build <span className="font-accent font-normal italic">growth.</span>
+          we build{" "}
+          <span className="inline-block relative min-w-[200px] sm:min-w-[280px] text-left sm:text-center font-accent font-normal italic">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={words[index]}
+                initial={{ opacity: 0, filter: "blur(14px)", y: 14, scale: 0.96 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0, scale: 1 }}
+                exit={{ opacity: 0, filter: "blur(14px)", y: -14, scale: 0.96 }}
+                transition={{
+                  duration: 0.55,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="inline-block text-white"
+              >
+                {words[index]}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </motion.h1>
 
-        {/* Subheadline matching Figma Image 3 */}
+        {/* Subheadline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -39,7 +76,7 @@ export default function Hero({ onBookCall }: HeroProps) {
           At Dotbey we create powerful digital strategies that help ambitious brands stand out, connect with the right audience, and grow with confidence.
         </motion.p>
 
-        {/* CTA Buttons matching Figma Image 3 */}
+        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

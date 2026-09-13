@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download, Search, RefreshCw, Users, CheckCircle, ArrowLeft } from "lucide-react";
+import { Download, Search, RefreshCw, Users, CheckCircle, ArrowLeft, Lock, LogOut, KeyRound } from "lucide-react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 
@@ -17,9 +17,43 @@ interface Lead {
 }
 
 export default function AdminLeadsPage() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [passcode, setPasscode] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const DEFAULT_PIN = "dotbey2026";
+
+  useEffect(() => {
+    // Check if previously authenticated in current browser session
+    const storedAuth = sessionStorage.getItem("dotbey_admin_auth");
+    if (storedAuth === "true") {
+      setAuthenticated(true);
+      fetchLeads();
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (passcode.trim() === DEFAULT_PIN || passcode.trim() === (process.env.NEXT_PUBLIC_ADMIN_PIN || "dotbey2026")) {
+      sessionStorage.setItem("dotbey_admin_auth", "true");
+      sessionStorage.setItem("dotbey_admin_pin", passcode.trim());
+      setAuthenticated(true);
+      setErrorMsg("");
+      fetchLeads();
+    } else {
+      setErrorMsg("Invalid security passcode. Access denied.");
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("dotbey_admin_auth");
+    sessionStorage.removeItem("dotbey_admin_pin");
+    setAuthenticated(false);
+    setPasscode("");
+  };
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -36,16 +70,74 @@ export default function AdminLeadsPage() {
     }
   };
 
-  useEffect(() => {
-    fetchLeads();
-  }, []);
-
   const filteredLeads = leads.filter(
     (l) =>
       l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       l.contact.toLowerCase().includes(searchQuery.toLowerCase()) ||
       l.plan.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // 🔒 Security Passcode Login Gate Screen
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4 font-sans relative overflow-hidden">
+        {/* Soft Radial Glow */}
+        <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_var(--tw-gradient-stops)) from-blue-600/15 via-transparent to-transparent pointer-events-none" />
+
+        <div className="w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-8 shadow-2xl backdrop-blur-xl z-10 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-[#0052FF] flex items-center justify-center mx-auto mb-6">
+            <Lock className="w-7 h-7 text-[#0052FF]" />
+          </div>
+
+          <div className="mb-6">
+            <Logo variant="light" />
+            <h1 className="text-xl font-bold tracking-tight text-white mt-4">
+              Admin Security Gate
+            </h1>
+            <p className="text-xs text-slate-400 mt-1">
+              Enter Dotbey agency passcode to view strategy call leads.
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-4 text-left">
+            <div>
+              <label className="block text-xs font-semibold text-slate-300 mb-1 flex items-center gap-1.5">
+                <KeyRound className="w-3.5 h-3.5 text-blue-400" />
+                <span>Security Passcode</span>
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="Enter passcode (e.g. dotbey2026)"
+                value={passcode}
+                onChange={(e) => {
+                  setPasscode(e.target.value);
+                  setErrorMsg("");
+                }}
+                className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 focus:border-[#0052FF] focus:ring-1 focus:ring-[#0052FF] text-white text-xs outline-none transition-all"
+              />
+            </div>
+
+            {errorMsg && (
+              <p className="text-xs text-rose-400 font-medium bg-rose-500/10 border border-rose-500/20 rounded-xl px-3 py-2">
+                {errorMsg}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-full bg-[#0052FF] hover:bg-blue-600 active:scale-[0.98] text-white font-semibold text-xs transition-all shadow-lg shadow-blue-600/25"
+            >
+              Authenticate & Unlock
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // 🔓 Authenticated Admin Dashboard View
+  const currentPin = sessionStorage.getItem("dotbey_admin_pin") || DEFAULT_PIN;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-4 sm:p-8 font-sans">
@@ -79,13 +171,21 @@ export default function AdminLeadsPage() {
             </button>
 
             <a
-              href="/api/export-leads"
+              href={`/api/export-leads?pin=${encodeURIComponent(currentPin)}`}
               download
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0052FF] hover:bg-blue-600 text-white text-xs font-bold transition-all shadow-lg shadow-blue-600/30"
             >
               <Download className="w-4 h-4" />
               <span>Download CSV Sheet</span>
             </a>
+
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400 text-xs font-semibold transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
           </div>
         </div>
 
@@ -112,7 +212,7 @@ export default function AdminLeadsPage() {
               <span className="text-xs font-medium text-slate-400">Excel / Sheets Export</span>
               <Download className="w-4 h-4 text-blue-400" />
             </div>
-            <p className="text-sm font-semibold text-blue-400">Ready for Download</p>
+            <p className="text-sm font-semibold text-blue-400">Secured & Authenticated</p>
           </div>
         </div>
 
