@@ -64,17 +64,17 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-white text-slate-900 overflow-hidden">
+    <section id="pricing" className="py-24 bg-white dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header matching Screenshot 351 */}
+        {/* Section Header */}
         <div className="text-left sm:text-center max-w-2xl mx-auto mb-14">
-          <h2 className="text-4xl sm:text-5xl font-normal tracking-tight text-slate-900">
-            Simple <span className="font-accent italic font-normal text-slate-900">pricing</span>
+          <h2 className="text-4xl sm:text-5xl font-normal tracking-tight text-slate-900 dark:text-white">
+            Simple <span className="font-accent italic font-normal text-slate-900 dark:text-blue-400">pricing</span>
           </h2>
         </div>
 
-        {/* 3-Column Outer Container Frame matching Screenshot 351 EXACTLY */}
-        <div className="max-w-6xl mx-auto bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-10 shadow-sm">
+        {/* 3-Column Outer Container Frame */}
+        <div className="max-w-6xl mx-auto bg-white dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {plans.map((plan, index) => (
               <motion.div
@@ -83,58 +83,58 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: index * 0.08 }}
-                className={`relative bg-white rounded-2xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
+                className={`relative bg-white dark:bg-slate-900 rounded-2xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
                   plan.popular
-                    ? "border-2 border-[#0052FF] shadow-lg shadow-blue-500/10"
-                    : "border border-slate-200/70"
+                    ? "border-2 border-[#0052FF] dark:border-blue-500 shadow-lg shadow-blue-500/10"
+                    : "border border-slate-200/70 dark:border-slate-800"
                 }`}
               >
                 <div>
-                  {/* POPULAR Label matching Screenshot 351 */}
+                  {/* POPULAR Label */}
                   {plan.popular && (
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052FF] block mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#0052FF] dark:text-blue-400 block mb-2">
                       POPULAR
                     </span>
                   )}
 
-                  {/* Title & Subtitle matching Screenshot 351 */}
-                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight mb-2">
+                  {/* Title & Subtitle */}
+                  <h3 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
                     {plan.name}
                   </h3>
-                  <p className="text-xs text-slate-500 font-normal leading-relaxed mb-8 min-h-[40px]">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-relaxed mb-8 min-h-[40px]">
                     {plan.subtitle}
                   </p>
 
-                  {/* Price Display matching Screenshot 351 */}
+                  {/* Price Display */}
                   <div className="mb-8 flex items-baseline">
-                    <span className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">
+                    <span className="text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-white tracking-tight">
                       {plan.price}
                     </span>
                     {plan.period && (
-                      <span className="text-xs font-normal text-slate-500 ml-1">
+                      <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-1">
                         {plan.period}
                       </span>
                     )}
                   </div>
 
-                  {/* Full-width Blue Button with Small White Square Icon matching Screenshot 351 */}
+                  {/* Full-width Button */}
                   <button
                     onClick={() => onSelectPlan && onSelectPlan(plan.name)}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#0052FF] hover:bg-blue-700 active:scale-[0.98] py-3.5 px-4 text-xs font-semibold text-white transition-all shadow-md shadow-blue-600/20 mb-8"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#0052FF] hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 active:scale-[0.98] py-3.5 px-4 text-xs font-semibold text-white transition-all shadow-md shadow-blue-600/20 mb-8"
                   >
                     <span className="w-2 h-2 bg-white rounded-xs inline-block" />
                     <span>{plan.buttonText}</span>
                   </button>
 
-                  {/* Features Checklist matching Screenshot 351 */}
-                  <div className="pt-6 border-t border-slate-100">
-                    <p className="text-xs font-semibold text-slate-900 mb-4">
+                  {/* Features Checklist */}
+                  <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
+                    <p className="text-xs font-semibold text-slate-900 dark:text-white mb-4">
                       Includes
                     </p>
                     <ul className="space-y-3">
                       {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2.5 text-xs text-slate-600 font-normal">
-                          <Check className="w-3.5 h-3.5 text-slate-900 shrink-0" />
+                        <li key={feature} className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-300 font-normal">
+                          <Check className="w-3.5 h-3.5 text-slate-900 dark:text-blue-400 shrink-0" />
                           <span>{feature}</span>
                         </li>
                       ))}

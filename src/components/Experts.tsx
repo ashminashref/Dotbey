@@ -84,15 +84,15 @@ export default function Experts() {
   ];
 
   return (
-    <section id="experts" className="py-24 bg-white text-slate-900 overflow-hidden">
+    <section id="experts" className="py-24 bg-white dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header matching Figma Image 1 */}
+        {/* Section Header */}
         <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">
-            Meet our <span className="font-accent font-normal italic">experts</span>
+          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">
+            Meet our <span className="font-accent font-normal italic text-slate-900 dark:text-blue-400">experts</span>
           </h2>
 
-          {/* Navigation Controls matching Figma Image 1 */}
+          {/* Navigation Controls */}
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrev}
@@ -121,9 +121,9 @@ export default function Experts() {
                 key={`${expert.id}-${idx}`}
                 onMouseEnter={() => setHoveredId(expert.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className="relative h-[460px] w-full rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 bg-slate-100"
+                className="relative h-[460px] w-full rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800"
               >
-                {/* Photo View (Default) */}
+                {/* Photo View */}
                 <img
                   src={expert.image}
                   alt={expert.name}
@@ -141,7 +141,7 @@ export default function Experts() {
                   </p>
                 </div>
 
-                {/* Electric Blue Details Card (Revealed ONLY on Hover matching user request!) */}
+                {/* Electric Blue Details Card (Revealed on Hover) */}
                 <motion.div
                   initial={false}
                   animate={{
@@ -149,7 +149,7 @@ export default function Experts() {
                     scale: isHovered ? 1 : 0.96,
                   }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className={`absolute inset-0 z-20 bg-[#0052FF] p-8 sm:p-10 text-white flex flex-col justify-between ${
+                  className={`absolute inset-0 z-20 bg-[#0052FF] dark:bg-slate-900 p-8 sm:p-10 text-white flex flex-col justify-between border dark:border-blue-500/30 ${
                     isHovered ? "pointer-events-auto" : "pointer-events-none"
                   }`}
                 >
@@ -157,22 +157,22 @@ export default function Experts() {
                     <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1">
                       {expert.name}
                     </h3>
-                    <p className="text-xs uppercase tracking-wider font-medium text-blue-200 mb-6">
+                    <p className="text-xs uppercase tracking-wider font-medium text-blue-200 dark:text-blue-400 mb-6">
                       {expert.role}
                     </p>
-                    <p className="text-sm font-normal text-blue-50/90 leading-relaxed">
+                    <p className="text-sm font-normal text-blue-50/90 dark:text-slate-300 leading-relaxed">
                       {expert.bio}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-6 pt-6 border-t border-white/20">
+                  <div className="flex items-center gap-6 pt-6 border-t border-white/20 dark:border-slate-800">
                     {expert.socials.map((soc) => (
                       <a
                         key={soc.name}
                         href={soc.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-medium text-blue-100 hover:text-white transition-colors"
+                        className="text-xs font-medium text-blue-100 dark:text-blue-400 hover:text-white transition-colors"
                       >
                         {soc.name}
                       </a>

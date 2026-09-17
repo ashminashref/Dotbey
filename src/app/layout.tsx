@@ -3,6 +3,7 @@ import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import SmoothScroll from "@/components/SmoothScroll";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -120,9 +121,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-[#0052FF] font-sans text-slate-900 selection:bg-blue-600 selection:text-white antialiased">
+      <body className="min-h-screen bg-white dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 selection:bg-blue-600 selection:text-white antialiased transition-colors duration-300">
         <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_PUBLIC_GA_ID || "G-DOTBEY2026"} />
-        <SmoothScroll>{children}</SmoothScroll>
+        <ThemeProvider>
+          <SmoothScroll>{children}</SmoothScroll>
+        </ThemeProvider>
       </body>
     </html>
   );

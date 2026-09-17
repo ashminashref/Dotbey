@@ -6,17 +6,13 @@ import {
   Menu,
   X,
   ArrowUpRight,
-  Phone,
-  Home,
-  Info,
-  Briefcase,
-  Tag,
-  Users,
-  HelpCircle,
+  Sun,
+  Moon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface NavbarProps {
   onBookCall?: () => void;
@@ -26,6 +22,7 @@ export default function Navbar({ onBookCall }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,29 +33,30 @@ export default function Navbar({ onBookCall }: NavbarProps) {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "About", href: "/about", icon: Info },
-    { name: "Services", href: "/services", icon: Briefcase },
-    { name: "Pricing", href: "/pricing", icon: Tag },
-    { name: "Experts", href: "/experts", icon: Users },
-    { name: "FAQ", href: "/faq", icon: HelpCircle },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Services", href: "/services" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Experts", href: "/experts" },
+    { name: "FAQ", href: "/faq" },
   ];
 
   return (
-    <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 pb-2 transition-all duration-300 pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 pb-2 transition-all duration-300">
+      <div className="w-full max-w-4xl relative">
+        {/* Floating Glass Navbar Pill */}
         <motion.nav
           initial={{ y: -40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className={`pointer-events-auto w-full max-w-4xl rounded-full px-6 py-3 flex items-center justify-between transition-all duration-300 ${
+          className={`w-full rounded-full px-5 py-3 flex items-center justify-between transition-all duration-300 ${
             scrolled
-              ? "bg-white/90 backdrop-blur-xl text-slate-900 shadow-xl shadow-blue-900/5 border border-slate-200/80"
-              : "bg-white/95 backdrop-blur-md text-slate-900 shadow-md shadow-black/5"
+              ? "bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl text-slate-900 dark:text-white shadow-xl shadow-blue-950/10 border border-slate-200/80 dark:border-slate-800"
+              : "bg-white/95 dark:bg-slate-900/90 backdrop-blur-md text-slate-900 dark:text-white shadow-md shadow-black/5 border border-white/60 dark:border-slate-800/80"
           }`}
         >
-          {/* Official Dotbey Brand Logo in #035DF7 Electric Blue */}
-          <Logo variant="blue" />
+          {/* Official Dotbey Brand Logo */}
+          <Logo variant={theme === "dark" ? "light" : "blue"} />
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-7">
@@ -70,8 +68,8 @@ export default function Navbar({ onBookCall }: NavbarProps) {
                   href={link.href}
                   className={`text-sm font-medium transition-colors duration-200 ${
                     isActive
-                      ? "text-[#0052FF] font-semibold"
-                      : "text-slate-600 hover:text-slate-900"
+                      ? "text-[#0052FF] dark:text-blue-400 font-semibold"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {link.name}
@@ -80,8 +78,21 @@ export default function Navbar({ onBookCall }: NavbarProps) {
             })}
           </div>
 
-          {/* CTA Button */}
+          {/* Desktop CTA & Theme Toggle */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-yellow-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all active:scale-90"
+              aria-label="Toggle Dark and Light Mode"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-700" />
+              )}
+            </button>
+
             <button
               onClick={onBookCall}
               className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#0052FF] hover:bg-blue-700 px-5 py-2 text-sm font-medium text-white transition-all duration-200 shadow-md shadow-blue-600/20 active:scale-[0.98]"
@@ -91,104 +102,81 @@ export default function Navbar({ onBookCall }: NavbarProps) {
             </button>
           </div>
 
-          {/* Mobile Menu Button - iOS Dynamic Island Pill Trigger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex md:hidden items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#0052FF] hover:bg-blue-100 transition-all active:scale-95"
-            aria-label="Toggle Navigation Menu"
-          >
-            <span className="text-xs font-semibold">Menu</span>
-            {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-          </button>
-        </motion.nav>
-      </header>
-
-      {/* Apple iOS 18 Dynamic Floating Island Mobile Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-xl md:hidden flex flex-col justify-end p-4 pb-8"
-          >
-            <motion.div
-              initial={{ y: 60, scale: 0.95, opacity: 0 }}
-              animate={{ y: 0, scale: 1, opacity: 1 }}
-              exit={{ y: 60, scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              className="bg-white/95 backdrop-blur-2xl rounded-3xl p-6 shadow-2xl border border-white/40 flex flex-col gap-6 text-slate-900 max-h-[85vh] overflow-y-auto"
+          {/* Mobile Right Controls: Theme Toggle & Menu Trigger */}
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-yellow-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all active:scale-90"
+              aria-label="Toggle Dark and Light Mode"
             >
-              {/* Header inside floating island */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <Logo variant="dark" />
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
+              {theme === "dark" ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-700" />
+              )}
+            </button>
 
-              {/* Navigation Grid Cards */}
-              <div className="grid grid-cols-2 gap-3">
-                {navLinks.map((link, idx) => {
-                  const IconComp = link.icon;
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex items-center justify-center p-2 rounded-full text-slate-800 dark:text-slate-100 hover:text-[#0052FF] hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90"
+              aria-label="Toggle Mobile Navigation"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </motion.nav>
+
+        {/* Minimal White / Dark Glass Mobile Dropdown Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute top-16 left-0 right-0 mt-2 p-5 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800 shadow-2xl shadow-blue-950/15 md:hidden flex flex-col gap-4 text-slate-900 dark:text-white z-50 select-none"
+            >
+              {/* Vertical Minimal Navigation Links */}
+              <div className="flex flex-col divide-y divide-slate-100 dark:divide-slate-800">
+                {navLinks.map((link) => {
                   const isActive = pathname === link.href;
-
                   return (
-                    <motion.div
+                    <Link
                       key={link.name}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.04 + 0.05 }}
+                      href={link.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`py-3 flex items-center justify-between text-base font-semibold transition-colors ${
+                        isActive
+                          ? "text-[#0052FF] dark:text-blue-400"
+                          : "text-slate-700 dark:text-slate-200 hover:text-[#0052FF]"
+                      }`}
                     >
-                      <Link
-                        href={link.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all ${
-                          isActive
-                            ? "bg-[#0052FF] text-white border-[#0052FF] shadow-md shadow-blue-500/20"
-                            : "bg-slate-50 text-slate-700 border-slate-200/80 hover:bg-slate-100"
-                        }`}
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-xl flex items-center justify-center ${
-                            isActive
-                              ? "bg-white/20 text-white"
-                              : "bg-white text-[#0052FF]"
-                          }`}
-                        >
-                          <IconComp className="w-4 h-4" />
-                        </div>
-                        <span className="text-sm font-semibold">{link.name}</span>
-                      </Link>
-                    </motion.div>
+                      <span>{link.name}</span>
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0052FF] dark:bg-blue-400" />
+                      )}
+                    </Link>
                   );
                 })}
               </div>
 
-              {/* CTA Action Bar */}
-              <div className="pt-2">
+              {/* Minimal Strategy Call Button */}
+              <div className="pt-2 flex flex-col gap-2">
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
                     if (onBookCall) onBookCall();
                   }}
-                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#0052FF] hover:bg-blue-700 active:scale-[0.98] py-3.5 text-sm font-semibold text-white shadow-xl shadow-blue-600/25 transition-all"
+                  className="w-full flex items-center justify-center gap-2 rounded-full bg-[#0052FF] hover:bg-blue-700 active:scale-[0.98] py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition-all"
                 >
-                  <Phone className="w-4 h-4" />
                   <span>Book a strategy call</span>
+                  <ArrowUpRight className="w-4 h-4" />
                 </button>
-                <p className="text-center text-[11px] text-slate-400 font-normal mt-3">
-                  © 2026 dotbey all rights reserved
-                </p>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
   );
 }
