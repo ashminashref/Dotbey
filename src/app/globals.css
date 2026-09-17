@@ -6,6 +6,8 @@
 
 html {
   scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
@@ -45,8 +47,8 @@ html, body {
   color: var(--foreground);
   font-family: var(--font-satoshi);
   overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
 }

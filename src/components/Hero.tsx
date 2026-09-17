@@ -33,7 +33,7 @@ export default function Hero({ onBookCall }: HeroProps) {
   return (
     <section
       id="hero"
-      className="relative w-full h-screen min-h-[720px] max-h-[1080px] bg-[#0052FF] dark:bg-slate-950 text-white flex flex-col justify-between items-center px-4 pt-28 sm:pt-32 pb-6 overflow-hidden select-none transition-colors duration-300"
+      className="relative w-full min-h-[100dvh] sm:h-screen sm:min-h-[720px] max-h-[1080px] bg-[#0052FF] dark:bg-slate-950 text-white flex flex-col justify-between items-center px-4 pt-20 sm:pt-32 pb-6 overflow-hidden select-none transition-colors duration-300"
     >
       {/* Background Soft Radial Ambient Glow */}
       <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,_var(--tw-gradient-stops)) from-blue-400/25 dark:from-blue-600/15 via-transparent to-transparent pointer-events-none" />
